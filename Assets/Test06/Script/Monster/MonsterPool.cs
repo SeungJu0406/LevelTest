@@ -10,7 +10,7 @@ namespace Test06
 
         [SerializeField] Queue<Monster> monsters;
 
-        [SerializeField][Range(0, 10)] float spawnPosRange;
+        [SerializeField][Range(0, 3)] float spawnPosRange;
 
         [SerializeField] float respawnTime;
 
@@ -31,7 +31,7 @@ namespace Test06
         }
         private void Start()
         {
-            for(int i = 0;i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 GetPool();
             }
@@ -42,10 +42,10 @@ namespace Test06
             {
                 Monster instance = monsters.Dequeue();
                 Vector3 spawnPos = new(
-                    Random.Range(-spawnPosRange, spawnPosRange),
-                    0,
-                    Random.Range(-spawnPosRange, spawnPosRange));
-                instance.transform.position= spawnPos;
+                    Random.Range(transform.position.x - spawnPosRange, transform.position.x + spawnPosRange),
+                    transform.position.y,
+                    Random.Range(transform.position.z - spawnPosRange, transform.position.z + spawnPosRange));
+                instance.transform.position = spawnPos;
                 instance.transform.rotation = transform.rotation;
                 instance.transform.parent = null;
                 instance.gameObject.SetActive(true);
@@ -56,7 +56,7 @@ namespace Test06
 
         public void ReturnPool(Monster instance)
         {
-            instance.transform.parent =transform;
+            instance.transform.parent = transform;
             instance.gameObject.SetActive(false);
             monsters.Enqueue(instance);
             respawnRoutine = StartCoroutine(RespawnRoutine());

@@ -19,14 +19,12 @@ namespace Test01
             float z = Input.GetAxisRaw("Vertical");
 
             Vector3 moveDir = new(x, 0, z);
+            if (moveDir == Vector3.zero) return;
             moveDir.Normalize();
 
             transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
-            if (x != 0 || z != 0)
-            {
-                Quaternion rotationDir = Quaternion.LookRotation(moveDir);
-                transform.rotation = Quaternion.Lerp(transform.rotation, rotationDir, rotateSpeed * Time.deltaTime);
-            }
+            Quaternion rotationDir = Quaternion.LookRotation(moveDir);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotationDir, rotateSpeed * Time.deltaTime);
 
         }
     }
